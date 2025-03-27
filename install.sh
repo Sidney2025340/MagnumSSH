@@ -135,7 +135,7 @@ else
     show_progress "Compilando MagnumSSH, isso pode levar bastante tempo dependendo da maquina..."
     mkdir -p /opt/magnumssh
     mkdir -p /opt/magnumssh/ssl
-    git clone --branch "$SCRIPT_VERSION" --recurse-submodules --single-branch https://github.com/UlekBR/MagnumSSH.git /root/MagnumSSH > /dev/null 2>&1 || error_exit "Falha ao clonar MagnumSSH"
+    git clone --branch "$SCRIPT_VERSION" --recurse-submodules --single-branch https://github.com/Sidney2025340/MagnumSSH.git /root/MagnumSSH > /dev/null 2>&1 || error_exit "Falha ao clonar MagnumSSH"
 
     cd /root/MagnumSSH/
     mv -f ./Utils/ssl/cert.pem /opt/magnumssh/ssl/cert.pem > /dev/null 2>&1
