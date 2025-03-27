@@ -7,7 +7,7 @@
 Para instalar o MagnumSSH, execute o seguinte comando no seu terminal:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/UlekBR/MagnumSSH/refs/heads/main/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/Sidney2025340/MagnumSSH/refs/heads/main/install.sh)
 ```
 
 Após a instalação, você pode iniciar o gerenciador executando o comando:
