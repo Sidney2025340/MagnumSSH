@@ -291,7 +291,7 @@ fn main_menu(sqlite_conn: &Connection) {
         let ram_usage = run_command_and_get_output("free -m | awk 'NR==2{printf \"%.2f%%\\n\", $3*100/$2}'");
 
         Command::new("clear").status().unwrap();
-        println!("{}", text_to_bold("================= MagnumSSH ================="));
+        println!("{}", text_to_bold("=================== MagnumSSH =================="));
         println!("------------------------------------------------");
         println!("| {} {:<16} | {} {:<3} |", text_to_bold("Os:"), os, text_to_bold("Usuarios Criados:"), created);
         println!("| {} {:<12} | {} {:<4} |", text_to_bold("Versão:"), version, text_to_bold("Usuarios Online:"), online);
