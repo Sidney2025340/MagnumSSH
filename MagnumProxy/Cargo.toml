@@ -1,5 +1,5 @@
 [package]
-name = "RustyProxy"
+name = "MagnumProxy"
 edition = "2021"
 
 [dependencies]
