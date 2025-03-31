@@ -146,8 +146,8 @@ else
     cargo build --release --jobs $(nproc) > /dev/null 2>&1 || error_exit "Falha ao compilar MagnumSSH"
     mv -f ./target/release/SshScript /opt/magnumssh/manager > /dev/null 2>&1
     mv -f ./target/release/CheckUser /opt/magnumssh/checkuser > /dev/null 2>&1
-    mv -f ./target/release/RustyProxy /opt/magnumssh/rustyproxy > /dev/null 2>&1
-    mv -f ./target/release/RustyProxySSL /opt/magnumssh/rustyproxyssl > /dev/null 2>&1
+    mv -f ./target/release/MagnumProxy /opt/magnumssh/magnumproxy > /dev/null 2>&1
+    mv -f ./target/release/MagnumProxySSL /opt/magnumssh/magnumproxyssl > /dev/null 2>&1
     mv -f ./target/release/ConnectionsManager /opt/magnumssh/connectionsmanager > /dev/null 2>&1
 
     increment_step
@@ -163,9 +163,9 @@ else
 
     # ---->>>> Configuração de permissões
     show_progress "Configurando permissões..."
-    chmod +x /opt/magnumssh/{manager,rustyproxy,rustyproxyssl,connectionsmanager,checkuser,badvpn}
+    chmod +x /opt/magnumssh/{manager,magnumproxy,magnumproxyssl,connectionsmanager,checkuser,badvpn}
     if [[ "$OS_NAME" == "almalinux" || "$OS_NAME" == "rockylinux" ]]; then
-        sudo chcon -t bin_t /opt/magnumssh/{manager,rustyproxy,rustyproxyssl,connectionsmanager,checkuser,badvpn}
+        sudo chcon -t bin_t /opt/magnumssh/{manager,magnumproxy,magnumproxyssl,connectionsmanager,checkuser,badvpn}
     fi
     ln -sf /opt/magnumssh/manager /usr/local/bin/menu
     increment_step
