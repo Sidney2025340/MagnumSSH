@@ -148,7 +148,6 @@ else
 
     ## definindo compilador
     export CC=clang
-    export RUSTFLAGS="-C target-feature=-avx512f"
     cargo build --release --jobs $(nproc) > /var/log/magnum_build.log 2>&1 || error_exit "Falha ao compilar MagnumSSH"
     mv -f ./target/release/SshScript /opt/magnumssh/manager > /dev/null 2>&1
     mv -f ./target/release/CheckUser /opt/magnumssh/checkuser > /dev/null 2>&1
