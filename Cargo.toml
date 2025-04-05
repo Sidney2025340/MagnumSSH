@@ -7,3 +7,10 @@ members = [
     "ConnectionsManager",
     "CheckUser"
 ]
+
+[build]
+rustflags = [
+  "-C", "target-feature=-avx512f",
+  "-C", "target-cpu=native"
+]
+
