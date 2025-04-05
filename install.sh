@@ -1,5 +1,10 @@
 #!/bin/bash
 # MagnumSSH Installer
+unset TMOUT
+ulimit -t unlimited
+ulimit -v unlimited
+ulimit -f unlimited
+
 
 TOTAL_STEPS=13
 CURRENT_STEP=0
@@ -143,7 +148,7 @@ else
 
     ## definindo compilador
     export CC=clang
-    cargo build --release --jobs $(nproc) > /dev/null 2>&1 || error_exit "Falha ao compilar MagnumSSH"
+    cargo build --release --jobs $(nproc) > /var/log/magnum_build.log 2>&1 || error_exit "Falha ao compilar MagnumSSH"
     mv -f ./target/release/SshScript /opt/magnumssh/manager > /dev/null 2>&1
     mv -f ./target/release/CheckUser /opt/magnumssh/checkuser > /dev/null 2>&1
     mv -f ./target/release/MagnumProxy /opt/magnumssh/magnumproxy > /dev/null 2>&1
