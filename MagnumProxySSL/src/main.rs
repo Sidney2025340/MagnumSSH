@@ -13,6 +13,7 @@ use tokio_rustls::{rustls, TlsAcceptor, server::TlsStream};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    rustls::crypto::ring::default_provider().install_default().expect("Failed to install rustls crypto provider");
     let addr = format!("[::]:{}", get_port());
 
     let cert = load_certs(PathBuf::from(get_cert()).as_path())?;
