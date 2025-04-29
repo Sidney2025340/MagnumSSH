@@ -587,6 +587,8 @@ fn run_command(command: String) -> &'static str {
 pub fn run_command_and_get_output(command: &str) -> String {
     let exec = Command::new("bash")
         .arg("-c")
+        .env("LC_ALL", "C") 
+        .env("LANG", "C") 
         .arg(command)
         .output()
         .expect("Failed to execute command");
