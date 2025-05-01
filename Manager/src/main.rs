@@ -779,6 +779,8 @@ fn connection_menu(sqlite_conn: &Connection) {
         println!("| 3 - {:<40} |", "MagnumProxySSL (direct/ws/wss)");
         println!("| 4 - {:<40} |", "Badvpn");
         println!("| 5 - {:<40} |", "OpenVpn");
+        println!("| 6 - {:<40} |", "Abrir portas (proxy, badvpn)");
+        println!("| 7 - {:<40} |", "Fechar todas as portas");
         println!("| 0 - {:<40} |", "Voltar ao menu");
         println!("------------------------------------------------");
         let mut option = String::new();
@@ -802,6 +804,12 @@ fn connection_menu(sqlite_conn: &Connection) {
                     }
                     5 => {
                         openvpn_menu(&sqlite_conn)
+                    }
+                    6 => {
+                        open_all_ports(&sqlite_conn)
+                    }
+                    7 => {
+                        close_all_ports(&sqlite_conn)
                     }
                     0 => {
                         break
@@ -1547,6 +1555,121 @@ fn journald_menu() {
         }
     }
 }
+
+
+
+fn open_all_ports(_sqlite_conn: &Connection) {
+    Command::new("clear").status().unwrap();
+
+    println!("------------------------------------------------");
+    println!("|                 {}                |", text_to_bold("Abrindo portas"));
+    println!("------------------------------------------------");
+    println!("Abrindo MagnumProxy em: 80 e 8080");
+    println!("Abrindo MagnumProxySSL em: 443");
+    println!("Abrindo badvpn da porta 7100 a 7900");
+    println!();
+
+
+    let ports = vec![80, 8080];
+    for port in ports {
+        if is_port_avaliable(port).unwrap() {
+            enable_proxy_port(port.to_string(), "MagnunProxy".to_string());
+            println!("Porta {} aberta", port);
+        } else {
+            println!("Porta {} já está em uso, ignorando...", port);
+        }
+    }
+
+    if is_port_avaliable(443).unwrap() {
+        enable_sslproxy_port(443.to_string());
+        println!("Porta 443 aberta");
+    } else {
+        println!("Porta 443 já está em uso, ignorando...");
+    }
+
+    for port in [7100, 7200, 7300, 7400, 7500, 7600, 7700, 7800, 7900] {
+        if is_port_avaliable(port).unwrap() {
+            enable_badvpn_port(port.to_string());
+            println!("Porta {} aberta", port);
+        } else {
+            println!("Porta {} já está em uso, ignorando...", port);
+        }
+    }
+
+    println!("------------------------------------------------");
+    println!();
+    println!("> Pressione qualquer tecla para voltar ao menu");
+    let mut return_string = String::new();
+    io::stdin().read_line(&mut return_string).expect("");
+}
+
+
+fn close_all_ports(sqlite_conn: &Connection) {
+    Command::new("clear").status().unwrap();
+
+    println!("------------------------------------------------");
+    println!("|                 {}                |", text_to_bold("Fechando portas"));
+    println!("------------------------------------------------");
+    let connections = get_connections(&sqlite_conn).unwrap();
+    if let Some(ports) = connections.proxy.ports {
+        for proxy_port in ports {
+            disable_proxy_port(proxy_port.to_string());
+            println!("porta: {} do proxy desativada com sucesso", proxy_port);
+        }
+    } else {
+        println!("nenhuma porta do proxy ativa")
+
+    }
+
+    if let Some(ports) = connections.sslproxy.ports {
+        for sslproxy_port in ports {
+            disable_sslproxy_port(sslproxy_port.to_string());
+            println!("porta: {} do sslproxy desativada com sucesso", sslproxy_port);
+
+        }
+    } else {
+        println!("nenhuma porta do sslproxy ativa")
+    }
+
+
+    if let Some(ports) = connections.badvpn.ports {
+        for badvpn_port in ports {
+            disable_badvpn_port(badvpn_port.to_string());
+            println!("porta: {} do badvpn desativada com sucesso", badvpn_port);
+        }
+    } else {
+        println!("nenhuma porta do badvpn ativa")
+    }
+
+
+
+    if let Some(_) = connections.openvpn.port {
+            disable_openvpn()
+    } else {
+        println!("nenhuma porta do openvpn ativa")
+    }
+
+
+    if let Some(ports) = connections.checkuser.ports {
+        for checkuser_port in ports {
+            disable_checkuser_port(checkuser_port.to_string());
+            println!("porta: {} do checkuser desativada com sucesso", checkuser_port);
+        }
+    } else {
+        println!("nenhuma porta do checkuser ativa")
+    }
+
+
+
+    println!("------------------------------------------------");
+    println!();
+    println!("> Pressione qualquer tecla para voltar ao menu");
+    let mut return_string = String::new();
+    io::stdin().read_line(&mut return_string).expect("");
+}
+
+
+
 fn services_menu() {
     Command::new("clear").status().unwrap();
 
